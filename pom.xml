@@ -15,6 +15,24 @@
       <version>4.5.0</version>
     </dependency>
 
+     <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-auth</artifactId>
+        <version>4.5.0</version>
+    </dependency>
+
+    <dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-pg-client</artifactId>
+    <version>4.5.7</version> <!-- Check the latest version -->
+</dependency>
+
+    <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.2.5</version> <!-- Make sure to use the latest version -->
+</dependency>
+
     <!-- Vert.x Web -->
     <dependency>
       <groupId>io.vertx</groupId>
@@ -34,6 +52,11 @@
     <artifactId>vertx-auth</artifactId>
     <version>4.5.0</version>
 </dependency>
+<dependency>
+        <groupId>org.mindrot</groupId>
+        <artifactId>jbcrypt</artifactId>
+        <version>0.4</version> <!-- Use the latest stable version -->
+    </dependency>
 
     <!-- Vert.x Authentication (JWT) -->
     <dependency>
@@ -47,6 +70,28 @@
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.32</version> <!-- Use the latest version -->
+    </dependency>
+
+    <!-- SLF4J Binding (you can choose between Logback, Log4j2, or others) -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.32</version> <!-- Or another appropriate version -->
+    </dependency>
+
+
+
+    <!-- Logback (Optional, if you want to use Logback for logging) -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.6</version> <!-- Or another appropriate version -->
     </dependency>
   </dependencies>
 
@@ -65,6 +110,16 @@
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>exec-maven-plugin</artifactId>
     <version>3.5.0</version>
+    <executions>
+                <execution>
+                    <goals>
+                        <goal>java</goal> <!-- Make sure this goal is specified -->
+                    </goals>
+                    <configuration>
+                        <mainClass>com.example.Main</mainClass> <!-- Replace with your main class -->
+                    </configuration>
+                </execution>
+                </executions>
     <configuration>
       <mainClass>com.example.Main</mainClass> <!-- Replace with your actual main class -->
     </configuration>
