@@ -7,6 +7,8 @@
   <artifactId>project-management-backend</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+
+
   <dependencies>
     <!-- Vert.x Core -->
     <dependency>
@@ -46,12 +48,9 @@
       <artifactId>vertx-jdbc-client</artifactId>
       <version>4.5.0</version>
     </dependency>
+
     <!-- Vert.x Auth dependency -->
-    <dependency>
-    <groupId>io.vertx</groupId>
-    <artifactId>vertx-auth</artifactId>
-    <version>4.5.0</version>
-</dependency>
+
 <dependency>
         <groupId>org.mindrot</groupId>
         <artifactId>jbcrypt</artifactId>
@@ -106,24 +105,14 @@
           <target>17</target>
         </configuration>
       </plugin>
-       <plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>exec-maven-plugin</artifactId>
-    <version>3.5.0</version>
-    <executions>
-                <execution>
-                    <goals>
-                        <goal>java</goal> <!-- Make sure this goal is specified -->
-                    </goals>
-                    <configuration>
-                        <mainClass>com.example.Main</mainClass> <!-- Replace with your main class -->
-                    </configuration>
-                </execution>
-                </executions>
-    <configuration>
-      <mainClass>com.example.Main</mainClass> <!-- Replace with your actual main class -->
-    </configuration>
-  </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+            <configuration>
+          <mainClass>com.example.Main</mainClass>
+        </configuration>
+        </plugin>
     </plugins>
   </build>
 
