@@ -36,9 +36,10 @@ public class MainVerticle extends AbstractVerticle {
             .onSuccess(res -> {
                 System.out.println("✅ PostgreSQL connection verified");
                 
-                // 3. Create router and auth handler
+                // 3. Create router and handlers
                 Router router = Router.router(vertx);
                 AuthHandler authHandler = new AuthHandler(vertx, dbClient);
+                UserController userController = new UserController(dbClient);
                 
                 // 4. Configure CORS
                 Set<String> allowedHeaders = new HashSet<>();
@@ -57,14 +58,12 @@ public class MainVerticle extends AbstractVerticle {
                 allowedMethods.add(HttpMethod.PATCH);
                 allowedMethods.add(HttpMethod.PUT);
 
-                // Create list of allowed origins
                 List<String> allowedOrigins = Arrays.asList(
-                    "http://localhost:4200"  // Your Angular frontend
-                    // Add more origins as needed: "https://yourdomain.com"
+                    "http://localhost:4200"
                 );
 
                 router.route().handler(CorsHandler.create()
-                    .addOrigins(allowedOrigins) // Now passing a List<String>
+                    .addOrigins(allowedOrigins)
                     .allowedHeaders(allowedHeaders)
                     .allowedMethods(allowedMethods)
                     .allowCredentials(true));
@@ -72,7 +71,7 @@ public class MainVerticle extends AbstractVerticle {
                 // 5. Configure routes
                 router.route().handler(BodyHandler.create());
                 
-                // Add OPTIONS handler for preflight requests
+                // OPTIONS handler
                 router.options("/login").handler(ctx -> {
                     ctx.response()
                         .putHeader("Access-Control-Allow-Origin", "http://localhost:4200")
@@ -81,7 +80,15 @@ public class MainVerticle extends AbstractVerticle {
                         .end();
                 });
                 
+                // Auth routes
                 router.post("/login").handler(authHandler);
+                
+                // User management routes
+                router.get("/api/users").handler(userController::getAllUsers);
+                router.post("/api/users").handler(userController::createUser);
+                router.put("/api/users/:user_id").handler(userController::updateUser);
+                router.delete("/api/users/:user_id").handler(userController::deleteUser);
+                // Health check
                 router.get("/").handler(ctx -> ctx.response().end("Server is running"));
                 
                 // 6. Start server
