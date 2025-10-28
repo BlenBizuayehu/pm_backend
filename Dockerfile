@@ -1,27 +1,18 @@
-# Use an official Maven image with Java 17 preinstalled
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+# Use Maven with Java 17
+FROM maven:3.9.5-eclipse-temurin-17
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy pom.xml and source code
+# Copy the project files
 COPY pom.xml .
 COPY src ./src
 
-# Build the JAR (skipping tests to speed up)
-RUN mvn clean package -DskipTests
+# Install dependencies (this caches them)
+RUN mvn dependency:go-offline
 
-# Use a smaller JDK image for running the app
-FROM eclipse-temurin:17-jdk-alpine
+# Expose the application port
+EXPOSE 8080
 
-WORKDIR /app
-
-# Copy only the built JAR from the build stage
-COPY --from=build /app/target/*.jar app.jar
-
-# Expose the port Render will use
-ENV PORT=8080
-EXPOSE $PORT
-
-# Start the Vert.x application
-CMD ["java", "-jar", "app.jar"]
+# Start your Vert.x app using mvn exec:java
+CMD ["mvn", "exec:java", "-Dexec.mainClass=com.example.MainVerticle"]

@@ -21,13 +21,21 @@ public class MainVerticle extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) {
         // 1. Configure PostgreSQL
-        PgConnectOptions connectOptions = new PgConnectOptions()
-            .setPort(5432)
-            .setHost("localhost")
-            .setDatabase("project_management")
-            .setUser("postgres")
-            .setPassword("yourpassword")
-            .setConnectTimeout(5000);
+        // 🌍 Load database connection details from environment variables (for Render or other deployments)
+String dbHost = System.getenv("DB_HOST") != null ? System.getenv("DB_HOST") : "localhost";
+int dbPort = System.getenv("DB_PORT") != null ? Integer.parseInt(System.getenv("DB_PORT")) : 5432;
+String dbName = System.getenv("DB_NAME") != null ? System.getenv("DB_NAME") : "project_management";
+String dbUser = System.getenv("DB_USER") != null ? System.getenv("DB_USER") : "postgres";
+String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "yourpassword";
+
+PgConnectOptions connectOptions = new PgConnectOptions()
+    .setPort(dbPort)
+    .setHost(dbHost)
+    .setDatabase(dbName)
+    .setUser(dbUser)
+    .setPassword(dbPassword)
+    .setConnectTimeout(5000);
+
 
         PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
         PgPool dbClient = PgPool.pool(vertx, connectOptions, poolOptions);

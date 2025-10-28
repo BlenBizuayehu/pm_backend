@@ -1,4 +1,8 @@
+com\example\TaskController.class
+com\example\TeamController.class
 com\example\Main.class
-com\example\AuthHandler.class
+com\example\ProjectController.class
 com\example\App.class
+com\example\AuthHandler.class
 com\example\MainVerticle.class
+com\example\UserController.class
