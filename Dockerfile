@@ -1,23 +1,21 @@
-# Start from Maven + JDK image
-FROM maven:3.9.1-eclipse-temurin-17 AS build
+# Use an OpenJDK image
+FROM openjdk:17-jdk-slim
 
+# Set working directory
 WORKDIR /app
 
 # Copy pom.xml and download dependencies
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# Copy source code
+# Copy the source code
 COPY src ./src
 
-# Build the app
+# Build the jar
 RUN mvn clean package -DskipTests
 
-# Runtime stage
-FROM eclipse-temurin:17-jdk-jammy
-
-WORKDIR /app
-COPY --from=build /app/target/project-management-backend-1.0-SNAPSHOT.jar ./app.jar
-
+# Expose the port (not strictly required, but good practice)
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# Run the app
+CMD ["java", "-jar", "target/project-management-backend-1.0-SNAPSHOT.jar"]

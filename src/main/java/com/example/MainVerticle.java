@@ -158,15 +158,17 @@ router.get("/api/tasks/:taskId/document/download")
                     router.get("/api/team-projects").handler(teamController::getTeamProjects);
 
                     // 6. Start server
-                    vertx.createHttpServer()
-                        .requestHandler(router)
-                        .listen(8080)
-                        .onSuccess(server -> {
-                            System.out.println("🚀 Server running on http://localhost:8080");
-                            System.out.println("📁 Upload directory: uploads/");
-                            startPromise.complete();
-                        })
-                        .onFailure(startPromise::fail);
+                    int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
+vertx.createHttpServer()
+    .requestHandler(router)
+    .listen(port)
+    .onSuccess(server -> {
+        System.out.println("🚀 Server running on port " + port);
+        System.out.println("📁 Upload directory: uploads/");
+        startPromise.complete();
+    })
+    .onFailure(startPromise::fail);
+
                 })
                 .onFailure(err -> {
                     System.err.println("❌ Database connection failed");
