@@ -1,29 +1,23 @@
-# 1. Use a Maven image with JDK 17
-FROM maven:3.9.4-eclipse-temurin-17 AS build
+# Start from Maven + JDK image
+FROM maven:3.9.1-eclipse-temurin-17 AS build
 
-# 2. Set working directory
 WORKDIR /app
 
-# 3. Copy pom.xml and download dependencies first (caching)
+# Copy pom.xml and download dependencies
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# 4. Copy source code
+# Copy source code
 COPY src ./src
 
-# 5. Build the application (skip tests for faster build)
+# Build the app
 RUN mvn clean package -DskipTests
 
-# 6. Use a smaller JDK image for running the app
+# Runtime stage
 FROM eclipse-temurin:17-jdk-jammy
 
 WORKDIR /app
+COPY --from=build /app/target/project-management-backend-1.0-SNAPSHOT.jar ./app.jar
 
-# 7. Copy the built jar from the build stage
-COPY --from=build /app/target/*.jar app.jar
-
-# 8. Expose the port
 EXPOSE 8080
-
-# 9. Run the jar
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
