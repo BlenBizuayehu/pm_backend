@@ -163,6 +163,8 @@ vertx.createHttpServer()
     .requestHandler(router)
     .listen(port)
     .onSuccess(server -> {
+        System.out.println("DB_HOST=" + dbHost + " DB_PORT=" + dbPort);
+
         System.out.println("🚀 Server running on port " + port);
         System.out.println("📁 Upload directory: uploads/");
         startPromise.complete();
