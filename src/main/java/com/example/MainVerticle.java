@@ -158,18 +158,19 @@ router.get("/api/tasks/:taskId/document/download")
                     router.get("/api/team-projects").handler(teamController::getTeamProjects);
 
                     // 6. Start server
-                    int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
-vertx.createHttpServer()
-    .requestHandler(router)
-    .listen(port)
-    .onSuccess(server -> {
-        System.out.println("DB_HOST=" + dbHost + " DB_PORT=" + dbPort);
+String portStr = System.getenv().getOrDefault("PORT", "8080");
+int port = Integer.parseInt(portStr);
 
-        System.out.println("🚀 Server running on port " + port);
-        System.out.println("📁 Upload directory: uploads/");
-        startPromise.complete();
-    })
-    .onFailure(startPromise::fail);
+vertx.createHttpServer()
+     .requestHandler(router)
+     .listen(port, "0.0.0.0")  // <-- bind to all interfaces
+     .onSuccess(server -> {
+         System.out.println("🚀 Server running on port " + port);
+         System.out.println("📁 Upload directory: uploads/");
+         startPromise.complete();
+     })
+     .onFailure(startPromise::fail);
+
 
                 })
                 .onFailure(err -> {
