@@ -124,8 +124,7 @@ public class MainVerticle extends AbstractVerticle {
                         // Add this with your other routes
                     // router.get("/api/tasks/:task_id/document").handler(taskController::getTaskDocument);
 // In your Vert.x router configuration
-router.get("/api/tasks/documents")
-    .handler(taskController::getAllTaskDocuments);
+
 router.get("/api/tasks/:taskId/document")
     .handler(taskController::downloadTaskDocument);
 router.get("/api/tasks/:task_id/documents")
